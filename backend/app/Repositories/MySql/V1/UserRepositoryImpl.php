@@ -12,4 +12,9 @@ class UserRepositoryImpl implements UserRepository
     {
         return User::create($userDAO->toArray());
     }
+
+    public function findByEmailAndPassword(string $email, string $password)
+    {
+        return User::select('*')->where('email',$email)->where('password',$password)->first();
+    }
 }

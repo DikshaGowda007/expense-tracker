@@ -7,4 +7,5 @@ use App\Repositories\DAO\V1\UserDAO;
 interface UserRepository
 {
     public function insert(UserDAO $userDAO): User;
+    public function findByEmailAndPassword(string $email, string $password);
 }
