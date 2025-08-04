@@ -12,8 +12,9 @@ return new class extends Migration {
             $table->string('name')->nullable();
             $table->string('email')->unique()->nullable();
             $table->string('password')->nullable();
-            $table->date('date_of_birth')->nullable();
             $table->boolean('verified')->default(0)->comment('1 - verified, 0 - not verified');
+            $table->timestamp('created_at')->nullable();
+            $table->timestamp('updated_at')->nullable();
         });
     }
 

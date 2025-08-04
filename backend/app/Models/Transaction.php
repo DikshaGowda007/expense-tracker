@@ -10,14 +10,16 @@ class Transaction extends Model
     public $timestamps = false;
 
     protected $fillable = [
+        'user_id',
         'text',
         'amount',
         'notes',
-        'category',
+        'category_id',
         'created_at',
         'updated_at',
+        'status',
+        'is_deleted',
     ];
-    
 
     public function getTableName(): string
     {

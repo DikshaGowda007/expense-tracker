@@ -1,6 +1,9 @@
 <?php
 namespace App\Modules\Auth;
 
+use Firebase\JWT\ExpiredException;
+use Firebase\JWT\JWT;
+
 class JwtService
 {
     private static string $secretKey = 'your_secret_key_here';
@@ -14,37 +17,18 @@ class JwtService
         $payload['iat'] = $issuedAt;
         $payload['exp'] = $expireAt;
 
-        $base64Header = base64_encode(json_encode(['alg' => self::$algo, 'typ' => 'JWT']));
-        $base64Payload = base64_encode(json_encode($payload));
-
-        $signature = hash_hmac('sha256', "$base64Header.$base64Payload", self::$secretKey, true);
-        $base64Signature = base64_encode($signature);
-
-        return "$base64Header.$base64Payload.$base64Signature";
+        return JWT::encode($payload, self::$secretKey, self::$algo);
     }
 
-    public static function decodeToken(string $token): ?array
+    public static function decodeToken(string $token)
     {
-        $parts = explode('.', $token);
-
-        if (count($parts) !== 3) {
-            return null;
+        try {
+            $decoded = JWT::decode($token, new \Firebase\JWT\Key(self::$secretKey, self::$algo));
+            return is_null($decoded) ? null : (array) $decoded;
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
+        } catch (ExpiredException $e) {
+            return response()->json(['status' => 'error', 'message' => 'Expired token'], 401);
         }
-
-        [$header, $payload, $signature] = $parts;
-
-        $expectedSignature = base64_encode(hash_hmac('sha256', "$header.$payload", self::$secretKey, true));
-
-        if (!hash_equals($expectedSignature, $signature)) {
-            return null;
-        }
-
-        $decodedPayload = json_decode(base64_decode($payload), true);
-
-        if (isset($decodedPayload['exp']) && time() > $decodedPayload['exp']) {
-            return null; // expired
-        }
-
-        return $decodedPayload;
     }
 }

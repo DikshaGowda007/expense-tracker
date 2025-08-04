@@ -2,6 +2,7 @@
 
 namespace App\Modules\Auth\Signup\Services;
 
+use App\Constants\CommonConstant;
 use App\Modules\Auth\JwtService;
 use App\Modules\V1\User\Bo\Add\UserDetailsBO;
 use App\Repositories\DAO\V1\UserDAO;
@@ -21,9 +22,9 @@ class LoginService
         try {
             $user = $this->validateUser($email, $password);
             $token = $this->generateJWT($user);
-            return ['status' => 'success', 'message' => 'Welcome ' . $user->name, 'token' => $token];
+            return ['status' => CommonConstant::SUCCESS, 'message' => 'Welcome ' . $user->name, 'token' => $token];
         } catch (Exception | \Throwable $e) {
-            return ['status' => 'error', 'message' => $e->getMessage()];
+            return ['status' => CommonConstant::ERROR, 'message' => $e->getMessage()];
         }
     }
 
@@ -38,19 +39,16 @@ class LoginService
 
     private function validateUser($email, $password)
     {
-        $user = $this->userRepository->findByEmailAndPassword($email, $password);
-        if (!$user) {
-            throw new Exception('User not found');
-        }
-        return $user;
+        return $this->userRepository->findByEmailAndPassword($email, $password)
+            ?: throw new Exception(CommonConstant::USER_NOT_FOUND);
     }
 
     private function generateJWT($user): string
     {
         $payload = [
-            'sub' => $user->id,
-            'name' => $user->name,
-            'email' => $user->email,
+            'loggedin_user_id' => $user->id,
+            'loggedin_user_name' => $user->name,
+            'loggedin_user_email' => $user->email,
         ];
 
         return JwtService::generateToken($payload, 3600);

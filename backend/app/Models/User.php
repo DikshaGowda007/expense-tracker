@@ -16,6 +16,8 @@ class User extends Authenticatable
         'password',
         'date_of_birth',
         'verified',
+        'created_at',
+        'updated_at',
     ];
 
     public function getTableName(): string
