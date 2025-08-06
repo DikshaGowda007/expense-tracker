@@ -1,7 +1,8 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { API } from "../constants/apiRoutes";
 import axiosRequest from "../components/axiosRequest";
+import { useNavigate } from 'react-router-dom';
 
 const AuthContext = createContext();
 
@@ -11,6 +12,26 @@ export const AuthProvider = ({ children }) => {
   const [password, setPassword] = useState("");
   const [responseStatus, setResponseStatus] = useState(null);
   const [responseMessage, setResponseMessage] = useState(null);
+  const [token, setToken] = useState(null); // To store token
+  const [isSignupView, setIsSignupView] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    const storedToken = localStorage.getItem("token");
+
+    if (storedUser && storedUser !== "undefined" && storedToken) {
+      try {
+        setUser(JSON.parse(storedUser));
+        setToken(storedToken);
+      } catch (error) {
+        console.error("Error parsing stored user:", error);
+        localStorage.removeItem("user");
+      }
+    }
+  }, []);
+
+   const navigate = useNavigate();
 
   const signup = async () => {
     let data = JSON.stringify({ name, email, password });
@@ -24,6 +45,31 @@ export const AuthProvider = ({ children }) => {
         : toast.error(response.message || "Signup failed.");
     } catch (error) {
       console.log(error);
+      toast.error("An unexpected error occurred.");
+    }
+  };
+
+  const login = async () => {
+    const data = JSON.stringify({ email, password });
+
+    try {
+      const response = await axiosRequest(`${API.AUTH.LOGIN}`, data, "POST");
+      setResponseStatus(JSON.stringify(response.status));
+      setResponseMessage(JSON.stringify(response.message));
+      response.status === "success"
+        ? (() => {
+            const name = response.message.match(/Welcome (.+)/)[1];
+            setUser(name);
+            setToken(response.token);
+            localStorage.setItem("user", JSON.stringify(response.user));
+            localStorage.setItem("token", response.token);
+            toast.success(response.message || "Login successful!");
+            navigate('/home'); 
+          })()
+        : toast.error(response.message || "Login failed.");
+    } catch (error) {
+      console.error(error);
+      toast.error("An unexpected error occurred.");
     }
   };
 
@@ -39,6 +85,11 @@ export const AuthProvider = ({ children }) => {
         setName,
         responseStatus,
         responseMessage,
+        token,
+        isSignupView,
+        setIsSignupView,
+        user,
+        login,
       }}
     >
       {children}

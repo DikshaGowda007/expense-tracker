@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router";
 import Signup from "../src/components/Signup";
 import { AuthProvider } from "./context/AuthContext";
 import { ToastContainer } from "react-toastify";
+import Home from "./components/Home";
 
 const App = () => {
   return (
@@ -12,6 +13,7 @@ const App = () => {
             <ToastContainer position="top-right" autoClose={3000} />
             <Routes>
               <Route path="/signup" element={<Signup />} />
+              <Route path="/home" element={<Home />} />
             </Routes>
           </div>
         </div>
