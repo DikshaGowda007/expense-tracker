@@ -1,9 +1,14 @@
-import React from 'react'
+import Header from "./Header";
+import { useAuth } from "../context/AuthContext";
 
 const Home = () => {
-  return (
-    <div>Home</div>
-  )
-}
+  const { user, navigate } = useAuth();
 
-export default Home
+  return (
+    <>
+      <Header userName={user} navigate={navigate} />
+    </>
+  );
+};
+
+export default Home;

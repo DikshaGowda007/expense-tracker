@@ -1,0 +1,17 @@
+const Header = ({ userName, navigate }) => {
+    
+  const handleLogout = ()=> {
+    navigate('/signup');
+  }
+  return (
+    <>
+    <div id="user">
+      <img src="/assets/user.png" alt="user-icon" />
+        <h3>Hello, {userName ? `${userName}` : `User`}</h3>
+        <img type="button" onClick={handleLogout} src={userName ? `/assets/user-logout.png`: `/assets/skills.png`} alt="settings" className="settings-icon" />
+    </div>
+    </>
+  )
+}
+
+export default Header
