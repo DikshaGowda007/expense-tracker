@@ -1,13 +1,16 @@
-const BalanceCard = ({ balance }) => {
+const BalanceCard = ({ onClick, balance }) => {
+  const handleCardClick = () => {
+    if (onClick) onClick();
+  };
   return (
     <>
-      <div className="box" id="card">
+      <div className="box" id="card" onClick={handleCardClick}>
         <div className="card card1"></div>
         <div className="card card2">
           <div className="balance-card">
             My Balance
             <h2>
-              ${" "}
+              $
               {(
                 parseFloat(balance.totalIncome) +
                 parseFloat(balance.totalExpense)

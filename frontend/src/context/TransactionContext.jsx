@@ -9,6 +9,7 @@ export const TransactionContext = createContext();
 
 const initialState = {
   categories: [],
+  transactions: [],
   balance: { totalIncome: "0.00", totalExpense: "0.00" },
   error: null,
 };
@@ -38,6 +39,7 @@ export const TransactionProvider = ({ children }) => {
 
       const categoryData = response.message;
       const totalBalance = calculateTotalBalance(response.message);
+      const transactionData = response.message;
       if (response?.status === "success") {
         dispatch({
           type: "CATEGORY_TRANSACTIONS",
@@ -47,9 +49,12 @@ export const TransactionProvider = ({ children }) => {
           type: "GET_TOTAL_BALANCE",
           payload: totalBalance,
         });
+        dispatch({
+          type: "TRANSACTION_LIST",
+          payload: transactionData,
+        })
         return true;
       } else {
-        console.log(error);
         dispatch({
           type: "TRANSACTIONS_ERROR",
           payload: error.message || "Failed to fetch category summary.",

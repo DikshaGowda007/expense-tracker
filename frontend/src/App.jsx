@@ -3,9 +3,11 @@ import Signup from "../src/components/Signup";
 import { AuthProvider } from "./context/AuthContext";
 import { ToastContainer } from "react-toastify";
 import Home from "./components/Home";
-import { TransactionProvider } from "./context/TransactionContext";
+import { TransactionProvider} from "./context/TransactionContext";
+import TransactionList from "./components/TransactionList";
 
 const App = () => {
+  
   return (
     <>
       <AuthProvider>
@@ -16,6 +18,7 @@ const App = () => {
             <Routes>
               <Route path="/signup" element={<Signup />} />
               <Route exact path="/" element={<Home />} />
+              <Route path="/transactions" element={<TransactionList/>} />
             </Routes>
           </div>
         </div>

@@ -14,7 +14,7 @@ const Home = () => {
   }, []);
 
   const handleClick = () => {
-    navigate("/home");
+    navigate("/transactions");
   };
 
   return (

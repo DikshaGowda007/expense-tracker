@@ -17,14 +17,18 @@
   border-radius: 40px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
   padding: 20px;
-  height: 70vh;
   width: 290px;
-  /* Style for the settings icon */
-  /* Tooltip for the settings icon */
-  /* Show the tooltip when hovering over the settings icon */
+}
+#container .container-box a {
+  text-decoration: none;
 }
 #container .container-box .transaction-container {
   margin: 8px;
+}
+#container .container-box .transaction-container .form-container h3 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 20px;
 }
 #container .container-box .transaction-container .input-container {
   border: 1px solid salmon;
@@ -143,34 +147,26 @@
   width: 30px;
   cursor: pointer;
   position: relative;
-  /* Position relative to display the tooltip */
   transition: transform 0.2s ease;
 }
 #container .container-box .settings-icon::after {
   content: "Settings";
-  /* Tooltip text */
   position: absolute;
   visibility: hidden;
-  /* Initially hidden */
   opacity: 0;
-  /* Initially transparent */
   background-color: #333;
   color: red;
   border-radius: 3px;
   padding: 5px;
   font-size: 12px;
   bottom: 120%;
-  /* Position the tooltip above the settings icon */
   left: 50%;
   transform: translateX(-50%);
   transition: opacity 0.3s ease, visibility 0.3s ease;
-  /* Smooth fade-in effect */
 }
 #container .container-box .settings-icon:hover::after {
   visibility: visible;
-  /* Make the tooltip visible */
   opacity: 1;
-  /* Fade in the tooltip */
 }
 #container .container-box .add-btn {
   position: relative;
@@ -210,43 +206,58 @@
   padding: 5px 10px;
 }
 
+.scroll-container {
+  max-height: 200px;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.pie-chart {
+  max-height: 200px;
+  max-width: 250px;
+  margin: 10px 0 45px 0;
+}
+.pie-chart .info {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.pie-chart canvas {
+  display: block;
+  width: 100% !important;
+  margin-top: 20px;
+}
+
 .form-container {
   width: 100%;
-  /* height: 100vh; */
-  /* display: flex; */
-  /* align-items: center; */
-  /* justify-content: center; */
-  /* background: linear-gradient(45deg , #c000b2aa , #8a2be2); */
-  /* width: 400px; */
-  /* background-color: #fff; */
   padding: 30px 15px;
   border-radius: 20px;
-  /* box-shadow: 0px 9px 30px -15px rgb(0 0 0); */
 }
-.form-container .input_box {
+.form-container form .input_box {
   text-align: center;
-  /* border: 2px solid #cd4ff7; */
-  /* border-radius: 5px; */
   margin-bottom: 25px;
   position: relative;
 }
-.form-container .input_box input {
-  /* font-size: 28px; */
+.form-container form .input_box input {
   padding: 10px 0px;
-  /* border: none; */
   border-radius: 25px;
   outline: none;
   border: 2px solid black;
   width: 100%;
   color: black;
 }
-.form-container .input_box :focus + label,
-.form-container .input_box :valid + label {
+.form-container form .input_box [type=number]::-webkit-outer-spin-button,
+.form-container form .input_box ::-webkit-inner-spin-button,
+.form-container form .input_box :focus + label {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.form-container form .input_box :focus + label {
   top: -16px;
   color: black;
   transition: all 0.5s cubic-bezier(0.6, 4, 0.255, 1.55);
 }
-.form-container .input_box label {
+.form-container form .input_box label {
   position: absolute;
   left: 8px;
   font-size: 20px;
@@ -255,7 +266,7 @@
   transition: 0.3s;
   color: black;
 }
-.form-container button {
+.form-container form button {
   width: 100%;
   font-size: 20px;
   border: none;
@@ -266,21 +277,34 @@
   box-shadow: 0px 10px 30px -10px rgb(150, 50, 255);
   transition: 0.3s;
 }
-.form-container .signup_link,
-.form-container .contact_link {
+.form-container form .signup_link,
+.form-container form .contact_link {
   font-size: 16px;
   margin-top: 20px;
   text-align: center;
   text-decoration: none;
 }
-.form-container .signup_link > span,
-.form-container .contact_link > span {
+.form-container form .signup_link > span,
+.form-container form .contact_link > span {
   text-decoration: underline;
   cursor: pointer;
 }
+
 .selected {
   margin-bottom: 0px;
   position: relative;
+}
+
+.scroll-container {
+  max-height: 200px;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+#categories-item:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+  transform: scale(1.05);
+  transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
 .no-data {

@@ -10,6 +10,11 @@ export default (state, action) => {
         ...state,
         balance: action.payload,
       };
+    case "TRANSACTION_LIST":
+      return {
+        ...state,
+        transactions: Array.isArray(action.payload) ? action.payload : [],
+      };
     case "TRANSACTIONS_ERROR":
       return {
         ...state,
