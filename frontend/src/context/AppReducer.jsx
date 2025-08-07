@@ -3,11 +3,17 @@ export default (state, action) => {
     case "CATEGORY_TRANSACTIONS":
       return {
         ...state,
-        data: Array.isArray(action.payload) ? action.payload : [],
+        categories: Array.isArray(action.payload) ? action.payload : [],
+      };
+    case "GET_TOTAL_BALANCE":
+      return {
+        ...state,
+        balance: action.payload,
       };
     case "TRANSACTIONS_ERROR":
       return {
         ...state,
+        data: [],
         error: action.payload,
       };
     default:

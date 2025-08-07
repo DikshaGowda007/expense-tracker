@@ -1,9 +1,10 @@
+const BASE_URL = "http://127.0.0.1:8000"
 export const API = {
   AUTH: {
-    LOGIN: "/api/auth/login",
-    SIGNUP: "/api/auth/signup",
+    LOGIN: `${BASE_URL}/api/auth/login`,
+    SIGNUP: `${BASE_URL}/api/auth/signup`,
   },
   TRANSACTION: {
-    GET_CATEGORY_SUMMARY: "/api/transaction/category-summary",
+    GET_CATEGORY_SUMMARY: `${BASE_URL}/api/transaction/category-summary`,
   },
 };

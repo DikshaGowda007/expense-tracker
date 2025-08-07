@@ -3,11 +3,13 @@ import axiosRequest from "../components/axiosRequest";
 import { API } from "../constants/apiRoutes";
 import AppReducer from "../context/AppReducer";
 import { useContext } from "react";
+import { toast } from "react-toastify";
 
 export const TransactionContext = createContext();
 
 const initialState = {
-  data: [],
+  categories: [],
+  balance: { totalIncome: "0.00", totalExpense: "0.00" },
   error: null,
 };
 
@@ -18,7 +20,9 @@ export const TransactionProvider = ({ children }) => {
     const token = localStorage.getItem("token");
 
     if (!token) {
-      console.error("Token not found. User is not authenticated.");
+      toast.error(
+        response.message || "Token not found. User is not authenticated."
+      );
       return false;
     }
 
@@ -31,17 +35,24 @@ export const TransactionProvider = ({ children }) => {
           Authorization: `Bearer ${token}`,
         }
       );
+
+      const categoryData = response.message;
+      const totalBalance = calculateTotalBalance(response.message);
       if (response?.status === "success") {
         dispatch({
           type: "CATEGORY_TRANSACTIONS",
-          payload: response.message,
+          payload: categoryData,
+        });
+        dispatch({
+          type: "GET_TOTAL_BALANCE",
+          payload: totalBalance,
         });
         return true;
       } else {
-        console.log(error)
+        console.log(error);
         dispatch({
           type: "TRANSACTIONS_ERROR",
-          payload: response?.message || "Failed to fetch category summary.",
+          payload: error.message || "Failed to fetch category summary.",
         });
         return false;
       }
@@ -49,7 +60,7 @@ export const TransactionProvider = ({ children }) => {
       console.error("Error fetching category summary:", error);
       dispatch({
         type: "TRANSACTIONS_ERROR",
-        payload: error?.message || "Request failed",
+        payload: error.message || "Request failed",
       });
       return false;
     }
@@ -60,6 +71,26 @@ export const TransactionProvider = ({ children }) => {
       {children}
     </TransactionContext.Provider>
   );
+};
+
+const calculateTotalBalance = (amountSummary) => {
+  let totalIncome = 0;
+  let totalExpense = 0;
+  amountSummary.forEach((amount) => {
+    const incomeTransactions = amount.transactions.filter(
+      (tx) => tx.amount > 0
+    );
+    const expenseTransactions = amount.transactions.filter(
+      (tx) => tx.amount < 0
+    );
+
+    totalIncome += incomeTransactions.reduce((sum, tx) => sum + tx.amount, 0);
+    totalExpense += expenseTransactions.reduce((sum, tx) => sum + tx.amount, 0);
+  });
+  return {
+    totalIncome: totalIncome.toFixed(2),
+    totalExpense: totalExpense.toFixed(2),
+  };
 };
 
 export const useTransaction = () => {
