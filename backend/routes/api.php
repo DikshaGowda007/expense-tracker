@@ -15,4 +15,5 @@ Route::prefix('transaction')->middleware(['jwt.verify'])->group(function () {
     Route::post('/add', [TransactionController::class, 'addTransaction'])->name('addTransaction');
     Route::post('/edit', [TransactionController::class, 'editTransaction'])->name('editTransaction');
     Route::post('/delete', [TransactionController::class, 'deleteTransaction'])->name('deleteTransaction');
+    Route::post('/category-summary', [TransactionController::class, 'getCategorySummary'])->name('getCategorySummary');
 });

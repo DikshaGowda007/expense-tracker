@@ -283,6 +283,13 @@
   position: relative;
 }
 
+.no-data {
+  padding: 1rem;
+  color: #777;
+  text-align: center;
+  font-style: italic;
+}
+
 /* Error mssg styling */
 .Toastify__toast--success {
   background-image: linear-gradient(315deg, #6953f7, #cd4ff7) !important;

@@ -2,6 +2,8 @@
 
 namespace App\Repositories\MySql\V1;
 
+use App\Constants\CommonConstant;
+use App\Models\Category;
 use App\Models\Transaction;
 use App\Repositories\DAO\V1\TransactionDAO;
 use App\Repositories\V1\TransactionRepository;
@@ -25,5 +27,16 @@ class TransactionRepositoryImpl implements TransactionRepository
     public function fetchByUserIdAndStatusAndIsDeleted(int $userId): Collection
     {
         return Transaction::where('user_id', $userId)->where('status', 1)->where('is_deleted', 0)->get();
+    }
+
+    public function fetchCategoriesWithTransactionsByUserIdAndActiveStatus(int $userId): Collection
+    {
+        return Category::with([
+            'transactions' => function ($query) use ($userId) {
+                $query->where('user_id', $userId)
+                    ->where('status', CommonConstant::STATUS_ACTIVE)
+                    ->where('is_deleted', CommonConstant::IS_DELETED_NO);
+            }
+        ])->get();
     }
 }

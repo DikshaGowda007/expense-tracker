@@ -12,4 +12,6 @@ interface TransactionRepository
     public function updateByIdAndUserId(TransactionDAO $transactionDAO, int $id, int $userId): bool;
 
     public function fetchByUserIdAndStatusAndIsDeleted(int $userId): Collection;
+
+    public function fetchCategoriesWithTransactionsByUserIdAndActiveStatus(int $userId): Collection;
 }
