@@ -1,5 +1,5 @@
 import { useTransaction } from "../context/TransactionContext";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useRef } from "react";
 import Doughnut from "../components/Doughnut";
 
@@ -21,22 +21,47 @@ const TransactionList = () => {
     });
   };
 
-  const filteredCategories = transactions.filter((category) =>
-    isIncomeView ? category.type === "1" : category.type === "2"
-  );
+  const filteredCategories = useMemo(() => {
+    return transactions.filter((category) =>
+      isIncomeView ? category.type === "1" : category.type === "2"
+    );
+  }, [transactions, isIncomeView]);
 
-  const dataForDoughnut = {
-    labels: filteredCategories.map((category) => category.category),
-    values: filteredCategories.map((category) =>
-      Math.abs(category.total_amount)
-    ),
-  };
+  const dataForDoughnut = useMemo(() => {
+    if (expandedCategoryId) {
+      const category = filteredCategories.find(
+        (cat) => cat.id === expandedCategoryId
+      );
+      if (!category) return { labels: [], values: [] };
+
+      const filteredTransactions = category.transactions.filter((tx) =>
+        isIncomeView ? tx.amount > 0 : tx.amount < 0
+      );
+
+      return {
+        labels: filteredTransactions.map((tx) => tx.text),
+        values: filteredTransactions.map((tx) => Math.abs(tx.amount)),
+      };
+    }
+
+    // Show category totals by default
+    return {
+      labels: filteredCategories.map((category) => category.category),
+      values: filteredCategories.map((category) =>
+        Math.abs(category.total_amount)
+      ),
+    };
+  }, [expandedCategoryId, filteredCategories, isIncomeView]);
 
   return (
     <>
       <Doughnut
         data={dataForDoughnut}
-        month={new Date().toLocaleString("en-US", { month: "long" })}
+        month={new Date().toLocaleString("en-US", {
+          month: "long",
+          year: "numeric",
+        })}
+        // total={isIncomeView ? `income` : `expense` }
       />
       <div className="card-transaction">
         <div
@@ -61,14 +86,28 @@ const TransactionList = () => {
                 isIncomeView ? tx.amount > 0 : tx.amount < 0
               );
               return (
-                <div key={category.id} className="category-section">
+                <div
+                  key={category.id}
+                  className={`category-section ${
+                    expandedCategoryId === category.id ? `expanded` : ``
+                  }`}
+                >
                   <div
                     id="categories-item"
                     onClick={() => toggleCategory(category.id)}
                     ref={(el) => (categoryRefs.current[category.id] = el)}
+                    className={
+                      expandedCategoryId === category.id ? "active" : ""
+                    }
                   >
                     <img src="/assets/user.png" alt="user-icon" />
-                    <div>{category.category}</div>
+                    <div
+                      className={`category-name ${
+                        expandedCategoryId === category.id ? "highlight" : ""
+                      }`}
+                    >
+                      {category.category}
+                    </div>
                     <div className="trans">${category.total_amount}</div>
                   </div>
                   {expandedCategoryId === category.id &&
