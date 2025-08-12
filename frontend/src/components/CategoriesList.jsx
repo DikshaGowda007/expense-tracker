@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { Link } from "react-router";
 
 const CategoriesList = ({ categorySummary }) => {
   const lastTransactionRef = useRef(null);
@@ -17,6 +18,7 @@ const CategoriesList = ({ categorySummary }) => {
       <div className="box" id="categories">
         <div className="transaction-container">
           <h3>Transactions</h3>
+          <Link to="/transactions" >See All</Link>
         </div>
         <div className="scroll-container">
           {Array.isArray(categorySummary) && categorySummary.length > 0 ? (

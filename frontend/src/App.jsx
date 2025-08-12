@@ -5,6 +5,7 @@ import { ToastContainer } from "react-toastify";
 import Home from "./components/Home";
 import { TransactionProvider} from "./context/TransactionContext";
 import TransactionList from "./components/TransactionList";
+import AddTransaction from "./components/AddTransaction";
 
 const App = () => {
   
@@ -19,6 +20,7 @@ const App = () => {
               <Route path="/signup" element={<Signup />} />
               <Route exact path="/" element={<Home />} />
               <Route path="/transactions" element={<TransactionList/>} />
+              <Route path="/addtransaction" element={<AddTransaction />} />
             </Routes>
           </div>
         </div>

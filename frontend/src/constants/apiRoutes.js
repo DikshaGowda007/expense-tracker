@@ -5,6 +5,7 @@ export const API = {
     SIGNUP: `${BASE_URL}/api/auth/signup`,
   },
   TRANSACTION: {
+    ADD: `${BASE_URL}/api/transaction/add`,
     GET_CATEGORY_SUMMARY: `${BASE_URL}/api/transaction/category-summary`,
   },
 };

@@ -4,6 +4,7 @@ import CategoriesList from "./CategoriesList";
 import { useEffect } from "react";
 import { useTransaction } from "../context/TransactionContext";
 import BalanceCard from "../components/BalanceCard";
+import AddTransactionBtn from "./AddTransactionBtn";
 
 const Home = () => {
   const { user, navigate } = useAuth();
@@ -11,7 +12,7 @@ const Home = () => {
 
   useEffect(() => {
     getCategorySummary();
-  }, []);
+  }, [user]);
 
   const handleClick = () => {
     navigate("/transactions");
@@ -22,6 +23,7 @@ const Home = () => {
       <Header userName={user} navigate={navigate} />
       <BalanceCard onClick={handleClick} balance={balance} />
       <CategoriesList categorySummary={categories} />
+      <AddTransactionBtn user={user} />
     </>
   );
 };

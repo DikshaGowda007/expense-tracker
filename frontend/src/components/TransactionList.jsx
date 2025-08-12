@@ -56,6 +56,7 @@ const TransactionList = () => {
   return (
     <>
       <Doughnut
+      key={`${isIncomeView} - ${expandedCategoryId ?? "default"}`}
         data={dataForDoughnut}
         month={new Date().toLocaleString("en-US", {
           month: "long",

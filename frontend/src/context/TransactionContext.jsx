@@ -4,6 +4,7 @@ import { API } from "../constants/apiRoutes";
 import AppReducer from "../context/AppReducer";
 import { useContext } from "react";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router";
 
 export const TransactionContext = createContext();
 
@@ -16,16 +17,10 @@ const initialState = {
 
 export const TransactionProvider = ({ children }) => {
   const [state, dispatch] = useReducer(AppReducer, initialState);
+  const navigate = useNavigate();
 
   const getCategorySummary = async () => {
     const token = localStorage.getItem("token");
-
-    if (!token) {
-      toast.error(
-        response.message || "Token not found. User is not authenticated."
-      );
-      return false;
-    }
 
     try {
       const response = await axiosRequest(
@@ -71,31 +66,79 @@ export const TransactionProvider = ({ children }) => {
     }
   };
 
+  const calculateTotalBalance = (amountSummary) => {
+    let totalIncome = 0;
+    let totalExpense = 0;
+    amountSummary.forEach((amount) => {
+      const incomeTransactions = amount.transactions.filter(
+        (tx) => tx.amount > 0
+      );
+      const expenseTransactions = amount.transactions.filter(
+        (tx) => tx.amount < 0
+      );
+
+      totalIncome += incomeTransactions.reduce((sum, tx) => sum + tx.amount, 0);
+      totalExpense += expenseTransactions.reduce(
+        (sum, tx) => sum + tx.amount,
+        0
+      );
+    });
+    return {
+      totalIncome: totalIncome.toFixed(2),
+      totalExpense: totalExpense.toFixed(2),
+    };
+  };
+
+  const addTransaction = async ({ amount, text, category, note }, navigate) => {
+    const token = localStorage.getItem("token");
+    let matchedCategory = null;
+    if (category) {
+      matchedCategory = state.categories.find(
+        (cat) => cat.category.toLowerCase() === category.trim().toLowerCase()
+      );
+      if (!matchedCategory) {
+        toast.error("Category not found.");
+        return false;
+      }
+    }
+
+    const data = JSON.stringify({
+      amount,
+      text,
+      category: matchedCategory?.id,
+      note,
+    });
+    try {
+      const response = await axiosRequest(
+        `${API.TRANSACTION.ADD}`,
+        data,
+        "POST",
+        {
+          Authorization: `Bearer ${token}`,
+        }
+      );
+      response.status === "success"
+        ? (toast.success("Transaction added successfully!"), navigate("/"))
+        : toast.error(response.message);
+    } catch (error) {
+      console.error("Error fetching category summary:", error);
+
+      toast.error("Some Error occurder");
+
+      dispatch({
+        type: "TRANSACTIONS_ERROR",
+        payload: error.message || "Request failed",
+      });
+    }
+  };
+
   return (
-    <TransactionContext.Provider value={{ ...state, getCategorySummary }}>
+    <TransactionContext.Provider
+      value={{ ...state, getCategorySummary, addTransaction, navigate }}
+    >
       {children}
     </TransactionContext.Provider>
   );
-};
-
-const calculateTotalBalance = (amountSummary) => {
-  let totalIncome = 0;
-  let totalExpense = 0;
-  amountSummary.forEach((amount) => {
-    const incomeTransactions = amount.transactions.filter(
-      (tx) => tx.amount > 0
-    );
-    const expenseTransactions = amount.transactions.filter(
-      (tx) => tx.amount < 0
-    );
-
-    totalIncome += incomeTransactions.reduce((sum, tx) => sum + tx.amount, 0);
-    totalExpense += expenseTransactions.reduce((sum, tx) => sum + tx.amount, 0);
-  });
-  return {
-    totalIncome: totalIncome.toFixed(2),
-    totalExpense: totalExpense.toFixed(2),
-  };
 };
 
 export const useTransaction = () => {
