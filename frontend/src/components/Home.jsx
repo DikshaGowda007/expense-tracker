@@ -7,7 +7,7 @@ import BalanceCard from "../components/BalanceCard";
 import AddTransactionBtn from "./AddTransactionBtn";
 
 const Home = () => {
-  const { user, navigate, logout } = useAuth();
+  const { user, navigate } = useAuth();
   const { balance, categories, getCategorySummary } = useTransaction();
 
   useEffect(() => {
@@ -20,7 +20,7 @@ const Home = () => {
 
   return (
     <>
-      <Header userName={user} logout={logout} />
+      <Header userName={user} navigate={navigate} />
       <BalanceCard onClick={handleClick} balance={balance} />
       <CategoriesList categorySummary={categories} />
       <AddTransactionBtn user={user} />

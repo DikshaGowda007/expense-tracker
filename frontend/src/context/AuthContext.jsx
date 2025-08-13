@@ -73,15 +73,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = async () =>{
-    localStorage.removeItem("user")
-    localStorage.removeItem("token")
-    setUser(null)
-    setToken(null)
-    navigate('/signup');
-    toast.success("Logged out successfully!");
-  }
-
   return (
     <AuthContext.Provider
       value={{
@@ -100,7 +91,6 @@ export const AuthProvider = ({ children }) => {
         user,
         login,
         navigate,
-        logout
       }}
     >
       {children}
