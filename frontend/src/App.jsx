@@ -6,6 +6,7 @@ import Home from "./components/Home";
 import { TransactionProvider} from "./context/TransactionContext";
 import TransactionList from "./components/TransactionList";
 import AddTransaction from "./components/AddTransaction";
+import AddCategory from "./components/AddCategory";
 
 const App = () => {
   
@@ -21,6 +22,7 @@ const App = () => {
               <Route exact path="/" element={<Home />} />
               <Route path="/transactions" element={<TransactionList/>} />
               <Route path="/addtransaction" element={<AddTransaction />} />
+              <Route path="/addcategory" element={<AddCategory />} />
             </Routes>
           </div>
         </div>
