@@ -19,6 +19,34 @@ export const TransactionProvider = ({ children }) => {
   const [state, dispatch] = useReducer(AppReducer, initialState);
   const navigate = useNavigate();
 
+  const getTransactionById = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.error("Token not found. User is not authenticated.");
+      return false;
+    }
+    try {
+      const response = await axiosRequest(`${API.TRANSACTION.GET}`, {}, "GET", {
+        Authorization: `Bearer ${token}`,
+      });
+
+      dispatch({
+        type:
+          response?.status === "success"
+            ? "GET_TRANSACTIONS"
+            : "TRANSACTIONS_ERROR",
+      });
+      return true;
+    } catch (error) {
+      console.error("Error fetching transactions:", error);
+      dispatch({
+        type: "TRANSACTIONS_ERROR",
+        payload: error?.message || "Request failed",
+      });
+      return false;
+    }
+  };
+
   const getCategorySummary = async () => {
     const token = localStorage.getItem("token");
 
@@ -132,9 +160,39 @@ export const TransactionProvider = ({ children }) => {
     }
   };
 
+  const addCategory = async ({ type, category }) => {
+    const token = localStorage.getItem("token");
+    const data = JSON.stringify({
+      type,
+      category,
+    });
+
+    try {
+      const response = await axiosRequest(`${API.CATEGORY.ADD}`, data, "POST", {
+        Authorization: `Bearer ${token}`,
+      });
+      response.status === "success"
+        ? (toast.success(response.message), navigate("/"))
+        : toast.error(response.message);
+    } catch (error) {
+      console.log(error);
+      toast.error("Some Error occured");
+      dispatch({
+        type: "CATEGORIES_ERROR",
+        payload: error.message || "Request failed",
+      });
+    }
+  };
+
   return (
     <TransactionContext.Provider
-      value={{ ...state, getCategorySummary, addTransaction, navigate }}
+      value={{
+        ...state,
+        getCategorySummary,
+        addTransaction,
+        navigate,
+        addCategory,
+      }}
     >
       {children}
     </TransactionContext.Provider>

@@ -21,6 +21,12 @@ export default (state, action) => {
         data: [],
         error: action.payload,
       };
+    case "CATEGORIES_ERROR":
+      return {
+        ...state,
+        data: [],
+        error: action.payload,
+      };
     default:
       return state;
   }
