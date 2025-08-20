@@ -10,9 +10,9 @@ class CategoryController
     public function addCategory(CategoryRequest $categoryRequest)
     {
         try {
-            $CategoryService = app(CategoryService::class);
-            $CategoryDetailsBo = $CategoryService->prepareBo($categoryRequest);
-            return response()->json($CategoryService->add($CategoryDetailsBo));
+            $categoryService = app(CategoryService::class);
+            $categoryDetailsBo = $categoryService->prepareBo($categoryRequest);
+            return response()->json($categoryService->add($categoryDetailsBo));
         } catch (\Throwable $e) {
             return response()->json(['status' => CommonConstant::ERROR, 'message' => $e->getMessage()], 200);
         }

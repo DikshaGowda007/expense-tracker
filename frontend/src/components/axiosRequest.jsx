@@ -24,6 +24,7 @@ const axiosRequest = async (url, params = {}, method = "GET", headers = {}) => {
     } else {
       console.log("Unknown Error:", error.message);
     }
+    throw error;
   }
 };
 export default axiosRequest;

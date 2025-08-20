@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\Repositories\MySql\V1\CategoryRepositoryImpl;
 use App\Repositories\MySql\V1\TransactionRepositoryImpl;
 use App\Repositories\MySql\V1\UserOTPVerificationRepositoryImpl;
 use App\Repositories\MySql\V1\UserRepositoryImpl;
+use App\Repositories\V1\CategoryRepository;
 use App\Repositories\V1\TransactionRepository;
 use App\Repositories\V1\UserOTPVerificationRepository;
 use App\Repositories\V1\UserRepository;
@@ -20,6 +22,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(UserRepository::class, UserRepositoryImpl::class);
         $this->app->bind(UserOTPVerificationRepository::class, UserOTPVerificationRepositoryImpl::class);
         $this->app->bind(TransactionRepository::class, TransactionRepositoryImpl::class);
+        $this->app->bind(CategoryRepository::class, CategoryRepositoryImpl::class);
     }
 
     /**

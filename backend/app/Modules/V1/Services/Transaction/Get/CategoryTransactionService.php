@@ -41,6 +41,7 @@ class CategoryTransactionService
             return [
                 'id' => $category['id'],
                 'category' => $category['name'],
+                'type' => $category['type'],
                 'total_amount' => round(collect($category['transactions'])->pluck('amount')->sum(), 2),
                 'transactions' => collect($category['transactions'])->map(function ($transaction) {
                     return [
