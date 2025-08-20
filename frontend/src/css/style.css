@@ -194,8 +194,9 @@
   font-size: 25px;
 }
 #container .container-box .card-transaction .button.selected {
-  border-bottom: 1px solid #cd4ff7;
+  border-bottom: 1.8px solid #cd4ff7;
   color: #cd4ff7;
+  top: 0.5px;
 }
 #container .container-box #categories-item {
   cursor: pointer;

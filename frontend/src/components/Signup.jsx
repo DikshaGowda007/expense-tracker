@@ -73,7 +73,6 @@ const Signup = () => {
               <input
                 type="text"
                 name="name"
-                required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
@@ -84,7 +83,6 @@ const Signup = () => {
               <input
                 type="password"
                 name="password"
-                required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -95,7 +93,6 @@ const Signup = () => {
               <input
                 type="email"
                 name="email"
-                required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -103,7 +100,7 @@ const Signup = () => {
             </div>
             <button type="submit">{isSignupView ? "Signup" : "Login"}</button>
             <p className="signup_link">
-              Already have an account? <span>Login</span>
+              Already have an account? <span onClick={()=> setIsSignupView(false)}>Login</span>
             </p>
             <p className="contact_link">
               <a href="#" onClick={(e) => e.preventDefault()}>

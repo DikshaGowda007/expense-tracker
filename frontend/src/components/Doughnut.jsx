@@ -72,7 +72,11 @@ const Doughnut = ({ data, month, total }) => {
           <h2>{month}</h2>
           <span>{total}</span>
         </div>
-        <D data={Doughnutdata} options={options} />
+        {Array.isArray(data?.values) && data.values.length > 0 ? (
+          <D data={Doughnutdata} options={options} />
+        ) : (
+          ``
+        )}
       </div>
     </>
   );
