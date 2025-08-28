@@ -3,6 +3,7 @@ export const API = {
   AUTH: {
     LOGIN: `${BASE_URL}/api/auth/login`,
     SIGNUP: `${BASE_URL}/api/auth/signup`,
+    VERIFY_OTP: `${BASE_URL}/api/auth/verifyOtp`,
   },
   CATEGORY: {
     ADD: `${BASE_URL}/api/category/add`,

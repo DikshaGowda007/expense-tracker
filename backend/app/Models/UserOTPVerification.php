@@ -14,10 +14,16 @@ class UserOTPVerification extends Model
         'user_id',
         'otp',
         'created_at',
+        'expires_at',
     ];
 
     public function getTableName(): string
     {
         return $this->table;
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

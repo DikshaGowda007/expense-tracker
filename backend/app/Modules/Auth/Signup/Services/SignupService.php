@@ -2,26 +2,27 @@
 
 namespace App\Modules\Auth\Signup\Services;
 
+use App\Constants\CommonConstant;
 use App\Http\Requests\V1\User\Add\UserRequest;
 use App\Modules\V1\User\Bo\Add\UserDetailsBO;
 use App\Repositories\DAO\V1\UserDAO;
+use App\Repositories\DAO\V1\UserOTPVerificationDAO;
 use App\Repositories\V1\UserRepository;
 use Exception;
 
 class SignupService
 {
 
-    public function __construct(private UserDetailsBO $userDetailsBo, private UserDAO $userDAO, private UserRepository $userRepository)
+    public function __construct(private UserDetailsBO $userDetailsBo, private UserDAO $userDAO, private UserRepository $userRepository, private UserOTPVerificationDAO $userOTPVerificationDAO)
     {
     }
     public function add(UserDetailsBO $userDetailsBo)
     {
         try {
-            $this->insert();
-            return ['status' => 'success', 'message' => 'Account created successfully'];
+            $user = $this->insert();
+            return $this->verifyOTP($user);
         } catch (Exception | \Throwable $e) {
-            return ['status' => 'error', 'message' => $e->getMessage()];
-
+            return ['status' => CommonConstant::ERROR, 'message' => $e->getMessage()];
         }
     }
 
@@ -46,10 +47,22 @@ class SignupService
     {
         $this->prepareDAO();
 
-        $user = $this->userRepository->insert($this->userDAO);
-        if (!$user) {
-            throw new Exception('Insert failed');
-        }
-        return $user;
+        return ['status' => CommonConstant::SUCCESS, 'message' => 'OTP Sent successfully', 'user_id' => $this->userRepository->insert($this->userDAO)]
+            ?: throw new Exception(CommonConstant::ERROR_MESSAGE_INSERT_DATA);
+    }
+
+    private function verifyOTP($user)
+    {
+        $otpService = app(OtpService::class);
+        return $otpService->sendOtp($user['user_id']);
+    }
+
+    public function prepareUserVerificationDAO(): UserOTPVerificationDAO
+    {
+        $this->userOTPVerificationDAO->setUserId($this->userDetailsBo->getName());
+        $this->userOTPVerificationDAO->setOtp($this->userDetailsBo->getEmail());
+        $this->userOTPVerificationDAO->setExpiresAt($this->userDetailsBo->getPassword());
+
+        return $this->userOTPVerificationDAO;
     }
 }

@@ -9,4 +9,5 @@ interface UserRepository
     public function insert(UserDAO $userDAO): User;
     public function update(UserDAO $userDAO);
     public function findByEmailAndPassword(string $email, string $password);
+    public function updateById(int $userId, UserDAO $userDAO): bool;
 }

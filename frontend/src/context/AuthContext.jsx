@@ -15,6 +15,9 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null); // To store token
   const [isSignupView, setIsSignupView] = useState(false);
   const [user, setUser] = useState(null);
+  const [isOtpSent, setIsOtpSent] = useState(false);
+  const [userId, setUserId] = useState(null);
+  const [otp, setOtp] = useState();
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -34,18 +37,48 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
 
   const signup = async () => {
-    let data = JSON.stringify({ name, email, password });
-    try {
-      const response = await axiosRequest(`${API.AUTH.SIGNUP}`, data, "POST");
+    if (!isOtpSent) {
+      let data = JSON.stringify({ name, email, password });
+      try {
+        const response = await axiosRequest(`${API.AUTH.SIGNUP}`, data, "POST");
+        if (response.status === "otp_sent") {
+          setIsOtpSent(true);
+          setUserId(response.user_id);
+        }
+        
+        setResponseStatus(JSON.stringify(response.status));
+        setResponseMessage(JSON.stringify(response.message));
+        (response.status === "success" || response.status === 'otp_sent')
+          ? toast.success(response.message || "Signup successful!")
+          : toast.error(response.message || "Signup failed.");
+      } catch (error) {
+        console.log(error);
+        toast.error("An unexpected error occurred.");
+      }
+    } else if (isOtpSent) {
+      let data = JSON.stringify({ user_id: userId, otp });
+      try {
+        const response = await axiosRequest(
+          `${API.AUTH.VERIFY_OTP}`,
+          data,
+          "POST"
+        );
 
-      setResponseStatus(JSON.stringify(response.status));
-      setResponseMessage(JSON.stringify(response.message));
-      response.status === "success"
-        ? toast.success(response.message || "Signup successful!")
-        : toast.error(response.message || "Signup failed.");
-    } catch (error) {
-      console.log(error);
-      toast.error("An unexpected error occurred.");
+        if (response.status === "SUCCESS" || response.status === "success") {
+          toast.success(response.message || "Verification successful!");
+          setIsSignupView(false);
+          setIsOtpSent(false);
+          setOtp("");
+        } else {
+          toast.error(response.message || "Verification failed.");
+        }
+
+        setResponseStatus(JSON.stringify(response.status));
+        setResponseMessage(JSON.stringify(response.message));
+      } catch (error) {
+        console.error("Error during OTP verification:", error);
+        toast.error("An unexpected error occurred.");
+      }
     }
   };
 
@@ -73,14 +106,14 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = async () =>{
-    localStorage.removeItem("user")
-    localStorage.removeItem("token")
-    setUser(null)
-    setToken(null)
-    navigate('/signup');
-    (user || token) ? toast.success("Logged out successfully!") : ``
-  }
+  const logout = async () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    setUser(null);
+    setToken(null);
+    navigate("/signup");
+    user || token ? toast.success("Logged out successfully!") : ``;
+  };
 
   return (
     <AuthContext.Provider
@@ -100,7 +133,10 @@ export const AuthProvider = ({ children }) => {
         user,
         login,
         navigate,
-        logout
+        logout,
+        isOtpSent,
+        otp,
+        setOtp,
       }}
     >
       {children}

@@ -12,6 +12,9 @@ const Signup = () => {
     isSignupView,
     setIsSignupView,
     login,
+    isOtpSent,
+    otp,
+    setOtp
   } = useAuth();
 
   const handleSubmit = async (e) => {
@@ -42,7 +45,6 @@ const Signup = () => {
             <div className="input_box">
               <input
                 type="email"
-                required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -51,7 +53,6 @@ const Signup = () => {
             <div className="input_box">
               <input
                 type="text"
-                required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -98,7 +99,12 @@ const Signup = () => {
               />
               <label>Email Id</label>
             </div>
-            <button type="submit">{isSignupView ? "Signup" : "Login"}</button>
+            {isOtpSent && (<div className="input_box">
+              <input type="text" value={otp || ``} onChange={(e) => setOtp(e.target.value)} />
+              <label>Verify OTP</label>
+            </div>)}
+                    <button type="submit">{isOtpSent ? `Verify OTP` : `Send OTP`}</button>
+            {/* <button type="submit">{isSignupView ? "Signup" : "Login"}</button> */}
             <p className="signup_link">
               Already have an account? <span onClick={()=> setIsSignupView(false)}>Login</span>
             </p>

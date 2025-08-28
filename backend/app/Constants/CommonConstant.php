@@ -6,6 +6,7 @@ class CommonConstant
 {
     public const ERROR = 'error';
     public const SUCCESS = 'success';
+    public const OTP_SENT = 'otp_sent';
     public const ERROR_MESSAGE_UPDATE_DATA = 'An error occurred while updating data.';
     public const ERROR_MESSAGE_INSERT_DATA = 'An error occurred while inserting data.';
     public const IS_DELETED_YES = 1;
@@ -17,4 +18,5 @@ class CommonConstant
     public const UNAUTHORIZED_EXCEPTION_MESSAGE = 'Unauthorized.';
     public const UNAUTHORIZED_EXCEPTION_CODE = 401;
     public const TOKEN_NOT_PROVIDED = 'Token not provided';
+    public const IS_VERIFIED_USER = 1;
 }

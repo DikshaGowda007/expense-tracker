@@ -25,4 +25,10 @@ class UserRepositoryImpl implements UserRepository
     {
         return User::select('*')->where('email', $email)->where('password', $password)->first();
     }
+
+    public function updateById(int $userId, UserDAO $userDAO): bool
+    {
+        $userDAO->setUpdatedAt(Carbon::now()->format('Y-m-d H:i:s'));
+        return User::where('id', $userId)->update($userDAO->toArray());
+    }
 }

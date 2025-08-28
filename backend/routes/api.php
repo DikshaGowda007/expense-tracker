@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('auth')->group(function () {
     Route::post('/signup', [SignupController::class, 'signup'])->name('signup');
     Route::post('/login', [UserController::class, 'login'])->name('login');
+    Route::post('/verifyOtp', [SignupController::class, 'verifyOtp'])->name('verifyOtp');
 });
 
 Route::prefix('transaction')->middleware(['jwt.verify'])->group(function () {
