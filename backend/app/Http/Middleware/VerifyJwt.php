@@ -20,7 +20,8 @@ class VerifyJwt
     public function handle(Request $request, Closure $next): Response
     {
         $token = $request->bearerToken();
-        if (!$token) {
+        $cookie = $request->cookie('token');
+        if (!$token || !$cookie) {
             return response()->json(['status' => 'error', 'message' => CommonConstant::TOKEN_NOT_PROVIDED], CommonConstant::UNAUTHORIZED_EXCEPTION_CODE);
         }
         try {

@@ -13,6 +13,7 @@ const axiosRequest = async (url, params = {}, method = "GET", headers = {}) => {
       },
       data: method === "POST" || method === "PUT" ? params : null,
       params: method === "GET" ? params : null,
+      withCredentials: true,
     };
     const response = await axios(config);
     return response.data;

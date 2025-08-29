@@ -22,7 +22,15 @@ class LoginService
         try {
             $user = $this->validateUser($email, $password);
             $token = $this->generateJWT($user);
-            return ['status' => CommonConstant::SUCCESS, 'message' => 'Welcome ' . $user->name, 'token' => $token];
+            $cookie = $this->generateCookie($token);
+            return [
+                'data' => [
+                    'status' => CommonConstant::SUCCESS,
+                    'message' => 'Welcome ' . $user->name,
+                    'token' => $token,
+                ],
+                'cookie' => $cookie,
+            ];
         } catch (Exception | \Throwable $e) {
             return ['status' => CommonConstant::ERROR, 'message' => $e->getMessage()];
         }
@@ -52,5 +60,21 @@ class LoginService
         ];
 
         return JwtService::generateToken($payload, 3600);
+    }
+
+    private function generateCookie(string $token)
+    {
+        // Create a secure, HTTP-only cookie
+        return cookie(
+            'token',
+            $token,
+            60 * 24,    // 1 day
+            '/',
+            null,
+            true,       // Secure (HTTPS only)
+            true,       // HTTP only
+            false,
+            'Strict'    // SameSite
+        );
     }
 }
