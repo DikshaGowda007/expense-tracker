@@ -23,3 +23,7 @@ Route::prefix('transaction')->middleware(['jwt.verify'])->group(function () {
 Route::prefix('category')->middleware(['jwt.verify'])->group(function () {
     Route::post('/add', [CategoryController::class, 'addCategory'])->name('addCategory');
 });
+
+Route::prefix('auth')->middleware(['jwt.verify'])->group(function () {
+    Route::post('/logout', [UserController::class, 'logout']);
+});

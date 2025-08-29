@@ -107,12 +107,19 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = async () => {
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
-    setUser(null);
-    setToken(null);
-    navigate("/signup");
-    user || token ? toast.success("Logged out successfully!") : ``;
+    try {
+      const response = await axiosRequest(`${API.AUTH.LOGOUT}`, {}, "POST");
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+      setUser(null);
+      setToken(null);
+      navigate("/signup");
+    } catch (error) {
+      console.log(error);
+      user || token
+        ? toast.error("Logout failed")
+        : toast.success("Logged out successfully!");
+    }
   };
 
   return (
