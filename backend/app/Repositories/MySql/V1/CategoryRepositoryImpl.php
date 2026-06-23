@@ -13,6 +13,7 @@ class CategoryRepositoryImpl implements CategoryRepository
     {
         $categoryDAO->setCreatedAt(Carbon::now()->format('Y-m-d H:i:s'));
         $categoryDAO->setUpdatedAt(Carbon::now()->format('Y-m-d H:i:s'));
+
         return Category::create($categoryDAO->toArray());
     }
 }

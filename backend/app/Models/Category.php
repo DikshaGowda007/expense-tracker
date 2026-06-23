@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Category extends Model
 {
     protected $table = 'categories';
+
     public $timestamps = false;
 
     protected $fillable = [
@@ -22,5 +23,4 @@ class Category extends Model
     {
         return $this->hasMany(Transaction::class);
     }
-
 }

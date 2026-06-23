@@ -3,6 +3,7 @@
 namespace App\Http\Requests\V1\Transaction\Edit;
 
 use App\Rules\ValidTransactionCategory;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -20,7 +21,7 @@ class TransactionRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
@@ -28,7 +29,7 @@ class TransactionRequest extends FormRequest
             'id' => 'required|exists:transactions,id',
             'amount' => 'required|numeric|gt:0',
             'notes' => 'nullable|string',
-            'category_id' => ['required', 'integer', new ValidTransactionCategory()],
+            'category_id' => ['required', 'integer', new ValidTransactionCategory],
             'text' => 'required|string',
         ];
 
@@ -40,7 +41,7 @@ class TransactionRequest extends FormRequest
         $firstError = $validator->errors()->first();
         throw new HttpResponseException(response()->json([
             'status' => 'error',
-            'message' => $firstError
+            'message' => $firstError,
         ]));
     }
 

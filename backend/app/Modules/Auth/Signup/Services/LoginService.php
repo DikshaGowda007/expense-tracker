@@ -4,18 +4,18 @@ namespace App\Modules\Auth\Signup\Services;
 
 use App\Constants\CommonConstant;
 use App\Modules\Auth\JwtService;
-use App\Modules\V1\User\Bo\Add\UserDetailsBO;
+use App\Modules\V1\User\Bo\Add\UserDetailsBo;
 use App\Repositories\DAO\V1\UserDAO;
-use App\Repositories\DAO\V1\UserOTPVerificationDAO;
 use App\Repositories\V1\UserRepository;
 use Exception;
 
 class LoginService
 {
-
-    public function __construct(private UserDetailsBO $userDetailsBo, private UserDAO $userDAO, private UserRepository $userRepository, private UserOTPVerificationDAO $userOTPVerificationDAO)
-    {
-    }
+    public function __construct(
+        private UserDetailsBo $userDetailsBo,
+        private UserDAO $userDAO,
+        private UserRepository $userRepository
+    ) {}
 
     public function add(string $email, string $password)
     {
@@ -23,15 +23,14 @@ class LoginService
             $user = $this->validateUser($email, $password);
             $token = $this->generateJWT($user);
             $cookie = $this->generateCookie($token);
-            return [
-                'data' => [
-                    'status' => CommonConstant::SUCCESS,
-                    'message' => 'Welcome ' . $user->name,
-                    'token' => $token,
-                ],
-                'cookie' => $cookie,
+            $response = [
+                'status' => CommonConstant::SUCCESS,
+                'message' => 'Welcome '.$user->name,
+                'token' => $token,
             ];
-        } catch (Exception | \Throwable $e) {
+
+            return response()->json($response)->withCookie($cookie);
+        } catch (Exception|\Throwable $e) {
             return ['status' => CommonConstant::ERROR, 'message' => $e->getMessage()];
         }
     }

@@ -3,10 +3,11 @@
 namespace App\Http\Requests\V1\Category\Add;
 
 use App\Exceptions\AccessForbiddenException;
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Http\Exceptions\HttpResponseException;
 use App\Modules\V1\Services\Category\CategoryAccessService;
+use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class CategoryRequest extends FormRequest
 {
@@ -18,6 +19,7 @@ class CategoryRequest extends FormRequest
     public function authorize(): bool
     {
         $this->categoryAccess = app(CategoryAccessService::class);
+
         // $this->hasAccess();
         return true;
     }
@@ -32,7 +34,7 @@ class CategoryRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {

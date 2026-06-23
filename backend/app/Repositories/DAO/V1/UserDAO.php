@@ -5,10 +5,15 @@ namespace App\Repositories\DAO\V1;
 class UserDAO
 {
     private ?string $name;
+
     private ?string $email;
+
     private ?string $password;
+
     private ?int $verified;
+
     private ?string $createdAt;
+
     private ?string $updatedAt;
 
     public function toArray()
@@ -48,7 +53,7 @@ class UserDAO
     /**
      * Set the value of name
      *
-     * @return  self
+     * @return self
      */
     public function setName($name)
     {
@@ -68,7 +73,7 @@ class UserDAO
     /**
      * Set the value of email
      *
-     * @return  self
+     * @return self
      */
     public function setEmail($email)
     {
@@ -88,7 +93,7 @@ class UserDAO
     /**
      * Set the value of password
      *
-     * @return  self
+     * @return self
      */
     public function setPassword($password)
     {
@@ -108,7 +113,7 @@ class UserDAO
     /**
      * Set the value of verified
      *
-     * @return  self
+     * @return self
      */
     public function setVerified($verified)
     {
@@ -119,7 +124,7 @@ class UserDAO
 
     /**
      * Get the value of createdAt
-     */ 
+     */
     public function getCreatedAt()
     {
         return $this->createdAt;
@@ -128,8 +133,8 @@ class UserDAO
     /**
      * Set the value of createdAt
      *
-     * @return  self
-     */ 
+     * @return self
+     */
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
@@ -139,7 +144,7 @@ class UserDAO
 
     /**
      * Get the value of updatedAt
-     */ 
+     */
     public function getUpdatedAt()
     {
         return $this->updatedAt;
@@ -148,8 +153,8 @@ class UserDAO
     /**
      * Set the value of updatedAt
      *
-     * @return  self
-     */ 
+     * @return self
+     */
     public function setUpdatedAt($updatedAt)
     {
         $this->updatedAt = $updatedAt;

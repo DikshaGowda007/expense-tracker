@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Constants\CommonConstant;
@@ -12,6 +13,7 @@ class CategoryController
         try {
             $categoryService = app(CategoryService::class);
             $categoryDetailsBo = $categoryService->prepareBo($categoryRequest);
+
             return response()->json($categoryService->add($categoryDetailsBo));
         } catch (\Throwable $e) {
             return response()->json(['status' => CommonConstant::ERROR, 'message' => $e->getMessage()], 200);

@@ -2,10 +2,12 @@
 
 namespace App\Modules\V1\User\Bo\Add;
 
-class UserDetailsBO
+class UserDetailsBo
 {
     private ?string $name = null;
+
     private ?string $email = null;
+
     private ?string $password = null;
 
     public function toArray(): array
@@ -36,7 +38,7 @@ class UserDetailsBO
     /**
      * Set the value of name
      *
-     * @return  self
+     * @return self
      */
     public function setName($name)
     {
@@ -56,7 +58,7 @@ class UserDetailsBO
     /**
      * Set the value of email
      *
-     * @return  self
+     * @return self
      */
     public function setEmail($email)
     {
@@ -76,7 +78,7 @@ class UserDetailsBO
     /**
      * Set the value of password
      *
-     * @return  self
+     * @return self
      */
     public function setPassword($password)
     {

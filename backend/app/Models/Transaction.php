@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Transaction extends Model
 {
     protected $table = 'transactions';
+
     public $timestamps = false;
 
     protected $fillable = [
@@ -35,5 +36,4 @@ class Transaction extends Model
     {
         return $this->belongsTo(User::class);
     }
-
 }

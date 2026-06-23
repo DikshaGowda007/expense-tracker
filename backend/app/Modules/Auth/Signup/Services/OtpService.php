@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Modules\Auth\Signup\Services;
 
 use App\Constants\CommonConstant;
@@ -8,23 +9,32 @@ use App\Repositories\DAO\V1\UserOTPVerificationDAO;
 use App\Repositories\V1\UserOTPVerificationRepository;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Support\Facades\Log;
 use Mail;
+
 class OtpService
 {
-    public function __construct(private UserOTPVerificationDAO $userOTPVerificationDAO, private UserOTPVerificationRepository $userOTPVerificationRepository)
-    {
-    }
+    public function __construct(
+        private UserOTPVerificationDAO $userOTPVerificationDAO,
+        private UserOTPVerificationRepository $userOTPVerificationRepository
+    ) {}
 
     public function sendOtp(User $user)
     {
         try {
             $this->insert($user->id);
             Mail::to($user->email)->send(new SendOtpMail($this->userOTPVerificationDAO->getOtp()));
-            return ['status' => CommonConstant::OTP_SENT, 'message' => 'OTP sent successfully', 'user_id' => $user->id];
-        } catch (Exception | \Throwable $e) {
-            \Log::error('OTP Send Error: ' . $e->getMessage());
 
-            return ['status' => CommonConstant::ERROR, 'message' => 'Failed to send OTP'];
+            return ['status' => CommonConstant::OTP_SENT, 'message' => 'OTP sent successfully', 'user_id' => $user->id];
+        } catch (Exception|\Throwable $e) {
+            Log::error('Error occurred during signup', [
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            return ['status' => CommonConstant::ERROR, 'message' => $e->getMessage()];
         }
     }
 
@@ -45,9 +55,10 @@ class OtpService
         $this->prepareUserVerificationDAO($userId, $otp, $expiresAt);
 
         $insertedId = $this->userOTPVerificationRepository->insert($this->userOTPVerificationDAO);
-        if (!$insertedId) {
+        if (! $insertedId) {
             throw new Exception('Insert failed');
         }
+
         return $insertedId;
     }
 }

@@ -1,10 +1,13 @@
 <?php
+
 namespace App\Modules\V1\Services\Category\Add\Bo;
 
-class CategoryDetailsBO
+class CategoryDetailsBo
 {
     private ?int $userId = null;
+
     private ?string $category = null;
+
     private ?int $type = null;
 
     public function toArray(): array
@@ -35,7 +38,7 @@ class CategoryDetailsBO
     /**
      * Set the value of category
      *
-     * @return  self
+     * @return self
      */
     public function setCategory($category)
     {
@@ -55,7 +58,7 @@ class CategoryDetailsBO
     /**
      * Set the value of userId
      *
-     * @return  self
+     * @return self
      */
     public function setUserId($userId)
     {
@@ -75,7 +78,7 @@ class CategoryDetailsBO
     /**
      * Set the value of type
      *
-     * @return  self
+     * @return self
      */
     public function setType($type)
     {

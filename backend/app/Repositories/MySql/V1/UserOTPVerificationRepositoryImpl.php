@@ -13,6 +13,7 @@ class UserOTPVerificationRepositoryImpl implements UserOTPVerificationRepository
     public function insert(UserOTPVerificationDAO $userOTPVerificationDAO): int
     {
         $userOTPVerificationDAO->setCreatedAt(Carbon::now()->format('Y-m-d H:i:s'));
+
         return UserOTPVerification::create($userOTPVerificationDAO->toArray())->id;
     }
 

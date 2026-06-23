@@ -4,9 +4,9 @@ namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Mail\Mailables\Content;
+use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Queue\SerializesModels;
 
 class SendOtpMail extends Mailable
 {
@@ -31,7 +31,7 @@ class SendOtpMail extends Mailable
         return new Content(
             view: 'emails.send_otp',
             with: [
-                'otp' => $this->otp
+                'otp' => $this->otp,
             ]
         );
     }
@@ -44,10 +44,9 @@ class SendOtpMail extends Mailable
     public function build()
     {
         return $this->subject('Your OTP Code')
-                    ->view('emails.send_otp')
-                    ->with([
-                        'otp' => $this->otp,
-                    ]);
+            ->view('emails.send_otp')
+            ->with([
+                'otp' => $this->otp,
+            ]);
     }
 }
-

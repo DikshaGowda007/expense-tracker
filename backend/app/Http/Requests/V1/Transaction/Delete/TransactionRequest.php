@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\V1\Transaction\Delete;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -19,12 +20,12 @@ class TransactionRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         $rules = [
-            'id' => 'required|exists:transactions,id'
+            'id' => 'required|exists:transactions,id',
         ];
 
         return $rules;
@@ -35,18 +36,18 @@ class TransactionRequest extends FormRequest
         $firstError = $validator->errors()->first();
         throw new HttpResponseException(response()->json([
             'status' => 'error',
-            'message' => $firstError
+            'message' => $firstError,
         ]));
     }
 
     public function attributes(): array
     {
         return [
-            'id' => 'Transaction Id'
+            'id' => 'Transaction Id',
         ];
     }
 
     protected $fields = [
-        'id'
+        'id',
     ];
 }

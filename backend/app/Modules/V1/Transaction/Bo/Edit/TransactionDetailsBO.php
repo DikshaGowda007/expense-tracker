@@ -1,12 +1,17 @@
 <?php
+
 namespace App\Modules\V1\Transaction\Bo\Edit;
 
-class TransactionDetailsBO
+class TransactionDetailsBo
 {
     private ?int $id = null;
+
     private ?string $text = null;
+
     private ?float $amount = null;
+
     private ?string $notes = null;
+
     private ?int $categoryId = null;
 
     public function toArray(): array
@@ -46,7 +51,7 @@ class TransactionDetailsBO
     /**
      * Set the value of text
      *
-     * @return  self
+     * @return self
      */
     public function setText($text)
     {
@@ -66,7 +71,7 @@ class TransactionDetailsBO
     /**
      * Set the value of amount
      *
-     * @return  self
+     * @return self
      */
     public function setAmount($amount)
     {
@@ -86,7 +91,7 @@ class TransactionDetailsBO
     /**
      * Set the value of notes
      *
-     * @return  self
+     * @return self
      */
     public function setNotes($notes)
     {
@@ -106,7 +111,7 @@ class TransactionDetailsBO
     /**
      * Set the value of category
      *
-     * @return  self
+     * @return self
      */
     public function setCategory($category)
     {
@@ -117,7 +122,7 @@ class TransactionDetailsBO
 
     /**
      * Get the value of userId
-     */ 
+     */
     public function getUserId()
     {
         return $this->userId;
@@ -126,8 +131,8 @@ class TransactionDetailsBO
     /**
      * Set the value of userId
      *
-     * @return  self
-     */ 
+     * @return self
+     */
     public function setUserId($userId)
     {
         $this->userId = $userId;
@@ -137,7 +142,7 @@ class TransactionDetailsBO
 
     /**
      * Get the value of categoryId
-     */ 
+     */
     public function getCategoryId()
     {
         return $this->categoryId;
@@ -146,8 +151,8 @@ class TransactionDetailsBO
     /**
      * Set the value of categoryId
      *
-     * @return  self
-     */ 
+     * @return self
+     */
     public function setCategoryId($categoryId)
     {
         $this->categoryId = $categoryId;
@@ -157,7 +162,7 @@ class TransactionDetailsBO
 
     /**
      * Get the value of id
-     */ 
+     */
     public function getId()
     {
         return $this->id;
@@ -166,8 +171,8 @@ class TransactionDetailsBO
     /**
      * Set the value of id
      *
-     * @return  self
-     */ 
+     * @return self
+     */
     public function setId($id)
     {
         $this->id = $id;

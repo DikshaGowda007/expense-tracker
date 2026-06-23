@@ -1,14 +1,21 @@
 <?php
+
 namespace App\Repositories\DAO\V1;
 
 class CategoryDAO
 {
     private ?int $userId = null;
+
     private ?string $name = null;
+
     private ?int $type = null;
+
     private ?int $status = null;
+
     private ?int $isDeleted = null;
+
     private ?string $createdAt = null;
+
     private ?string $updatedAt = null;
 
     public function toArray(): array
@@ -51,7 +58,7 @@ class CategoryDAO
     /**
      * Set the value of type
      *
-     * @return  self
+     * @return self
      */
     public function setType($type)
     {
@@ -71,7 +78,7 @@ class CategoryDAO
     /**
      * Set the value of status
      *
-     * @return  self
+     * @return self
      */
     public function setStatus($status)
     {
@@ -91,7 +98,7 @@ class CategoryDAO
     /**
      * Set the value of isDeleted
      *
-     * @return  self
+     * @return self
      */
     public function setIsDeleted($isDeleted)
     {
@@ -111,7 +118,7 @@ class CategoryDAO
     /**
      * Set the value of userId
      *
-     * @return  self
+     * @return self
      */
     public function setUserId($userId)
     {
@@ -131,7 +138,7 @@ class CategoryDAO
     /**
      * Set the value of createdAt
      *
-     * @return  self
+     * @return self
      */
     public function setCreatedAt($createdAt)
     {
@@ -151,7 +158,7 @@ class CategoryDAO
     /**
      * Set the value of updatedAt
      *
-     * @return  self
+     * @return self
      */
     public function setUpdatedAt($updatedAt)
     {
@@ -171,7 +178,7 @@ class CategoryDAO
     /**
      * Set the value of name
      *
-     * @return  self
+     * @return self
      */
     public function setName($name)
     {

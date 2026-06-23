@@ -16,6 +16,7 @@ class TransactionRepositoryImpl implements TransactionRepository
     {
         $transactionDAO->setCreatedAt(Carbon::now()->format('Y-m-d H:i:s'));
         $transactionDAO->setUpdatedAt(Carbon::now()->format('Y-m-d H:i:s'));
+
         return Transaction::create($transactionDAO->toArray());
     }
 
@@ -36,7 +37,7 @@ class TransactionRepositoryImpl implements TransactionRepository
                 $query->where('user_id', $userId)
                     ->where('status', CommonConstant::STATUS_ACTIVE)
                     ->where('is_deleted', CommonConstant::IS_DELETED_NO);
-            }
+            },
         ])->get();
     }
 }

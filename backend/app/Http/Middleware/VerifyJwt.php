@@ -15,26 +15,27 @@ class VerifyJwt
     /**
      * Handle an incoming request.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param  Closure(Request): (Response)  $next
      */
     public function handle(Request $request, Closure $next): Response
     {
         $token = $request->bearerToken() ?? $request
-        ->cookie('token');
-        if (!$token) {
+            ->cookie('token');
+        if (! $token) {
             return response()->json(['status' => 'error', 'message' => CommonConstant::TOKEN_NOT_PROVIDED], CommonConstant::UNAUTHORIZED_EXCEPTION_CODE);
         }
         try {
             $decoded = JwtService::decodeToken($token);
-            if (!$decoded) {
+            if (! $decoded) {
                 return response()->json(['status' => 'error', 'message' => CommonConstant::UNAUTHORIZED_EXCEPTION_MESSAGE], CommonConstant::UNAUTHORIZED_EXCEPTION_CODE);
             }
-            if (!is_null($decoded) && is_array($decoded)) {
+            if (! is_null($decoded) && is_array($decoded)) {
                 $request->merge(['jwtUser' => $decoded]);
             }
-        } catch (Throwable | Exception $e) {
+        } catch (Throwable|Exception $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 401);
         }
+
         return $next($request);
     }
 }

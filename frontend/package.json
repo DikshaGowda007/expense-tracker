@@ -4,11 +4,11 @@
     "version": "0.0.0",
     "type": "module",
     "scripts": {
-        "dev": "concurrently \"vite\" \"npm run sass\"",
+        "dev": "vite",
         "build": "vite build",
         "lint": "eslint .",
         "preview": "vite preview",
-        "sass": "sass --watch ../frontend/src/scss/style.scss ../frontend/src/css/style.css"
+"sass": "sass --watch src/scss/style.scss:src/css/style.css"
     },
     "dependencies": {
         "axios": "^1.11.0",

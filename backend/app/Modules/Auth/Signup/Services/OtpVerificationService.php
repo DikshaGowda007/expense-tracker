@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Modules\Auth\Signup\Services;
 
 use App\Constants\CommonConstant;
@@ -10,14 +11,17 @@ use Throwable;
 
 class OtpVerificationService
 {
-    public function __construct(private UserOTPVerificationRepository $userOTPVerificationRepository, private UserRepository $userRepository, private UserDAO $userDAO)
-    {}
+    public function __construct(
+        private UserOTPVerificationRepository $userOTPVerificationRepository,
+        private UserRepository $userRepository,
+        private UserDAO $userDAO) {}
 
     public function verifyOtp(int $userId, string $otp)
     {
         try {
             $this->validateOtp($userId, $otp);
             $this->updateUser($userId);
+
             return ['status' => CommonConstant::SUCCESS, 'message' => 'OTP verified successfully'];
         } catch (Exception $e) {
             return ['status' => CommonConstant::ERROR, 'message' => 'Incorrect OTP'];
@@ -32,12 +36,14 @@ class OtpVerificationService
         if ($otpRecord->isEmpty()) {
             throw new Exception(CommonConstant::UNAUTHORIZED_EXCEPTION_MESSAGE);
         }
+
         return $otpRecord;
     }
 
     public function updateUser(int $userId)
     {
         $this->userDAO->setVerified(CommonConstant::IS_VERIFIED_USER);
+
         return $this->userRepository->updateById($userId, $this->userDAO);
     }
 }

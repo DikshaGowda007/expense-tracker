@@ -6,13 +6,14 @@ use App\Constants\CommonConstant;
 use App\Models\Category;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Translation\PotentiallyTranslatedString;
 
 class ValidTransactionCategory implements ValidationRule
 {
     /**
      * Run the validation rule.
      *
-     * @param  \Closure(string, ?string=): \Illuminate\Translation\PotentiallyTranslatedString  $fail
+     * @param  Closure(string, ?string=): PotentiallyTranslatedString  $fail
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
@@ -21,10 +22,8 @@ class ValidTransactionCategory implements ValidationRule
             ->where('is_deleted', CommonConstant::IS_DELETED_NO)
             ->exists();
 
-        if (!$isValid) {
+        if (! $isValid) {
             $fail('The selected category is invalid or inactive.');
         }
     }
-
-
 }

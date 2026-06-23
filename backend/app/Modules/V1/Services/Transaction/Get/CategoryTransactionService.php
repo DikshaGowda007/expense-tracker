@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Modules\V1\Services\Transaction\Get;
 
 use App\Constants\CommonConstant;
@@ -8,16 +9,18 @@ use Illuminate\Support\Collection;
 
 class CategoryTransactionService
 {
-    public function __construct(private TransactionRepository $transactionRepository)
-    {
-    }
+    public function __construct(
+        private TransactionRepository $transactionRepository
+    ) {}
+
     public function get(int $userId)
     {
         try {
             $transactionDetails = $this->fetchTransactions($userId);
             $response = $this->formatResponse($transactionDetails);
+
             return ['status' => CommonConstant::SUCCESS, 'message' => $response];
-        } catch (Exception | \Throwable $e) {
+        } catch (Exception|\Throwable $e) {
             return ['status' => CommonConstant::ERROR, 'message' => $e->getMessage()];
         }
     }
@@ -25,6 +28,7 @@ class CategoryTransactionService
     private function fetchTransactions(int $userId)
     {
         $transactions = $this->transactionRepository->fetchCategoriesWithTransactionsByUserIdAndActiveStatus($userId);
+
         return $transactions->isNotEmpty() ? collect($transactions->toArray()) : collect([]);
     }
 
@@ -32,6 +36,7 @@ class CategoryTransactionService
     {
         $transformed = [];
         $this->prepareTransactionData($transactionDetails, $transformed);
+
         return empty($transformed) ? 'No transactions found' : $transformed;
     }
 

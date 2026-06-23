@@ -15,13 +15,8 @@ class UserController extends Controller
             $email = $userLoginRequest->input('email');
             $password = $userLoginRequest->input('password');
             $loginService = app(LoginService::class);
-            $result = $loginService->add($email, $password);
-            $response = response()->json($result['data']);
 
-            if (!empty($result['cookie'])) {
-                $response->withCookie($result['cookie']);
-            }
-            return $response;
+            return $loginService->add($email, $password);
         } catch (\Throwable $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 200);
         }

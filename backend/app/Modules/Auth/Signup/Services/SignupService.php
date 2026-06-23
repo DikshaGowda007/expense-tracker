@@ -4,29 +4,40 @@ namespace App\Modules\Auth\Signup\Services;
 
 use App\Constants\CommonConstant;
 use App\Http\Requests\V1\User\Add\UserRequest;
-use App\Modules\V1\User\Bo\Add\UserDetailsBO;
+use App\Modules\V1\User\Bo\Add\UserDetailsBo;
 use App\Repositories\DAO\V1\UserDAO;
 use App\Repositories\DAO\V1\UserOTPVerificationDAO;
 use App\Repositories\V1\UserRepository;
 use Exception;
+use Illuminate\Support\Facades\Log;
 
 class SignupService
 {
+    public function __construct(
+        private UserDetailsBo $userDetailsBo,
+        private UserDAO $userDAO,
+        private UserRepository $userRepository,
+        private UserOTPVerificationDAO $userOTPVerificationDAO) {}
 
-    public function __construct(private UserDetailsBO $userDetailsBo, private UserDAO $userDAO, private UserRepository $userRepository, private UserOTPVerificationDAO $userOTPVerificationDAO)
-    {
-    }
-    public function add(UserDetailsBO $userDetailsBo)
+    public function add(UserDetailsBo $userDetailsBo)
     {
         try {
             $user = $this->insert();
+
             return $this->verifyOTP($user);
-        } catch (Exception | \Throwable $e) {
+        } catch (Exception|\Throwable $e) {
+            Log::error('Error occurred during signup', [
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
             return ['status' => CommonConstant::ERROR, 'message' => $e->getMessage()];
         }
     }
 
-    public function prepareBo(UserRequest $userRequest): UserDetailsBO
+    public function prepareBo(UserRequest $userRequest): UserDetailsBo
     {
         $this->userDetailsBo->setName($userRequest->input('name'));
         $this->userDetailsBo->setEmail($userRequest->input('email'));
@@ -34,6 +45,7 @@ class SignupService
 
         return $this->userDetailsBo;
     }
+
     public function prepareDAO(): UserDAO
     {
         $this->userDAO->setName($this->userDetailsBo->getName());
@@ -54,6 +66,7 @@ class SignupService
     private function verifyOTP($user)
     {
         $otpService = app(OtpService::class);
+
         return $otpService->sendOtp($user['user_id']);
     }
 

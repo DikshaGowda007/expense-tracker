@@ -5,14 +5,23 @@ namespace App\Repositories\DAO\V1;
 class TransactionDAO
 {
     private ?int $id = null;
+
     private ?int $userId = null;
+
     private ?string $text = null;
+
     private ?float $amount = null;
+
     private ?string $notes = null;
+
     private ?int $categoryId = null;
+
     private ?string $createdAt = null;
+
     private ?string $updatedAt = null;
+
     private ?int $status = null;
+
     private ?int $isDeleted = null;
 
     public function toArray(): array
@@ -67,7 +76,7 @@ class TransactionDAO
     /**
      * Set the value of text
      *
-     * @return  self
+     * @return self
      */
     public function setText($text)
     {
@@ -87,7 +96,7 @@ class TransactionDAO
     /**
      * Set the value of amount
      *
-     * @return  self
+     * @return self
      */
     public function setAmount($amount)
     {
@@ -107,7 +116,7 @@ class TransactionDAO
     /**
      * Set the value of notes
      *
-     * @return  self
+     * @return self
      */
     public function setNotes($notes)
     {
@@ -127,7 +136,7 @@ class TransactionDAO
     /**
      * Set the value of categoryId
      *
-     * @return  self
+     * @return self
      */
     public function setCategoryId($categoryId)
     {
@@ -147,7 +156,7 @@ class TransactionDAO
     /**
      * Set the value of createdAt
      *
-     * @return  self
+     * @return self
      */
     public function setCreatedAt($createdAt)
     {
@@ -167,7 +176,7 @@ class TransactionDAO
     /**
      * Set the value of updatedAt
      *
-     * @return  self
+     * @return self
      */
     public function setUpdatedAt($updatedAt)
     {
@@ -187,7 +196,7 @@ class TransactionDAO
     /**
      * Set the value of userId
      *
-     * @return  self
+     * @return self
      */
     public function setUserId($userId)
     {
@@ -198,7 +207,7 @@ class TransactionDAO
 
     /**
      * Get the value of isDeleted
-     */ 
+     */
     public function getIsDeleted()
     {
         return $this->isDeleted;
@@ -207,8 +216,8 @@ class TransactionDAO
     /**
      * Set the value of isDeleted
      *
-     * @return  self
-     */ 
+     * @return self
+     */
     public function setIsDeleted($isDeleted)
     {
         $this->isDeleted = $isDeleted;
@@ -218,7 +227,7 @@ class TransactionDAO
 
     /**
      * Get the value of id
-     */ 
+     */
     public function getId()
     {
         return $this->id;
@@ -227,8 +236,8 @@ class TransactionDAO
     /**
      * Set the value of id
      *
-     * @return  self
-     */ 
+     * @return self
+     */
     public function setId($id)
     {
         $this->id = $id;
@@ -238,7 +247,7 @@ class TransactionDAO
 
     /**
      * Get the value of status
-     */ 
+     */
     public function getStatus()
     {
         return $this->status;
@@ -247,8 +256,8 @@ class TransactionDAO
     /**
      * Set the value of status
      *
-     * @return  self
-     */ 
+     * @return self
+     */
     public function setStatus($status)
     {
         $this->status = $status;

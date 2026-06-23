@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Repositories\V1;
 
 use App\Models\Transaction;

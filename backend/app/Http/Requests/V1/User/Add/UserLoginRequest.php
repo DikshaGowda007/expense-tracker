@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\V1\User\Add;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -19,13 +20,13 @@ class UserLoginRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         $rules = [
             'email' => ['required', 'email', 'max:255', 'exists:users,email'],
-            'password' => ['required', 'string', 'min:6']
+            'password' => ['required', 'string', 'min:6'],
         ];
 
         return $rules;
@@ -36,7 +37,7 @@ class UserLoginRequest extends FormRequest
         $firstError = $validator->errors()->first();
         throw new HttpResponseException(response()->json([
             'status' => 'error',
-            'message' => $firstError
+            'message' => $firstError,
         ]));
     }
 
@@ -50,6 +51,6 @@ class UserLoginRequest extends FormRequest
 
     protected $fields = [
         'email',
-        'password'
+        'password',
     ];
 }

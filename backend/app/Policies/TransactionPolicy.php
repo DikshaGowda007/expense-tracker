@@ -28,9 +28,6 @@ class TransactionPolicy
      */
     public function edit(User $user, Transaction $transaction): bool
     {
-        dd(1);
-        dd($transaction);
-        dd($transaction->user_id === $user->id);
         return $transaction->user_id === $user->id;
     }
 
@@ -39,6 +36,6 @@ class TransactionPolicy
      */
     public function delete(User $user, Transaction $transaction): bool
     {
-    return $transaction->user_id === $user->id;
+        return $transaction->user_id === $user->id;
     }
 }

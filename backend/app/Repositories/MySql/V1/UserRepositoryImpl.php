@@ -13,6 +13,7 @@ class UserRepositoryImpl implements UserRepository
     {
         $userDAO->setCreatedAt(Carbon::now()->format('Y-m-d H:i:s'));
         $userDAO->setUpdatedAt(Carbon::now()->format('Y-m-d H:i:s'));
+
         return User::create($userDAO->toArray());
     }
 
@@ -29,6 +30,7 @@ class UserRepositoryImpl implements UserRepository
     public function updateById(int $userId, UserDAO $userDAO): bool
     {
         $userDAO->setUpdatedAt(Carbon::now()->format('Y-m-d H:i:s'));
+
         return User::where('id', $userId)->update($userDAO->toArray());
     }
 }
