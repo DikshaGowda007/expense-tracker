@@ -1,6 +1,8 @@
 import axios from "axios";
 
 const axiosRequest = async (url, params = {}, method = "GET", headers = {}) => {
+  console.log('url')
+  console.log(url)
   try {
     // Setup axios configuration
     const config = {
@@ -16,6 +18,8 @@ const axiosRequest = async (url, params = {}, method = "GET", headers = {}) => {
       withCredentials: true,
     };
     const response = await axios(config);
+    console.log(config)
+    console.log(response)
     return response.data;
   } catch (error) {
     if (error.response) {
